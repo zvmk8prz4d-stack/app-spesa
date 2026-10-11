@@ -123,6 +123,8 @@ function trovaZona(testo, memoria) {
   const n = normalizza(testo)
   if (memoria && n in memoria) return memoria[n]
   if (/(^| )(surgel|congel)/.test(n)) return 22
+  // già cotto = rosticceria, anche se la prima parola è carne o verdura ("pollo e patate allo spiedo")
+  if (/(^| )(spiedo|girarrosto|rosticceria|fritt[aeio]|al forno)( |$)/.test(n)) return 2
   let meglio = null
   for (const v of VOCI) {
     const m = v.re.exec(n); if (!m) continue
