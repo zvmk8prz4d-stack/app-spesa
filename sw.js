@@ -1,5 +1,5 @@
 // Tiene l'app apribile anche senza campo. A ogni aggiornamento dell'app cambiare VERSIONE.
-const VERSIONE = 'spesa-1'
+const VERSIONE = 'spesa-2'
 const FILE = ['./', './index.html', './zone.js', './manifest.json', './icona-180.png', './icona-512.png']
 
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSIONE).then(c => c.addAll(FILE))); self.skipWaiting() })

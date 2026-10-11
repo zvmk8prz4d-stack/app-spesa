@@ -37,7 +37,7 @@ const PAROLE = [
     semi di girasole, semi di chia, semi di lino, semi di sesamo, frutta secca, frutta a guscio, uvetta, datteri, prugne secche, albicocche secche,
     fichi secchi, castagne, germogli, cocco, melagrana`,
   /* 1 pane e pasticceria */ `pane, pane fresco, pagnotta, panino, baguette, ciabatta, rosetta, michetta, filone, pane integrale, pane di segale,
-    pane ai cereali, focaccia, pizza bianca, brioche, cornetto, croissant, torta, crostata, pasticcini, bigne, krapfen, strudel, pasticceria, treccia`,
+    pane ai cereali, focaccia, pizza bianca, brioche, cornetto, croissant, torta, crostata, pasticcini, bigne, krapfen, strudel, pasticceria, treccia, pane alle olive, pane alle noci, pane ai semi, pane di grano duro, pane al latte, bauletto fresco`,
   /* 2 rosticceria e affettati */ `prosciutto, prosciutto crudo, prosciutto cotto, speck, salame, salamino, mortadella, bresaola, coppa, pancetta,
     lardo, porchetta, fesa di tacchino, affettato, affettati, carne salada, rosticceria, pollo arrosto, girarrosto, lasagne pronte, piatti pronti,
     arancini, suppli, olive ascolane, tramezzini, formaggio al taglio, insalata di riso, insalata russa, cotoletta pronta`,
@@ -45,12 +45,14 @@ const PAROLE = [
     formaggio, formaggi, parmigiano, parmigiano reggiano, grana, grana padano, gorgonzola, fontina, asiago, emmental, provola, scamorza,
     philadelphia, formaggio spalmabile, sottilette, feta, pecorino, taleggio, puzzone, trentingrana, uova, uovo, pasta fresca, tortellini, ravioli,
     cappelletti, gnocchi, pasta sfoglia, pasta frolla, pasta brise, pasta per pizza, wurstel, pesto fresco, hummus, tofu, seitan, kefir, skyr,
-    actimel, lievito di birra, spremuta, budino fresco, salmone affumicato, insalata in busta`,
+    actimel, lievito di birra, spremuta, budino fresco, salmone affumicato, insalata in busta, latticini, yogurt da bere, ricottina, fiocchi di latte, quark, provolone, caciotta, crema pasticcera`,
   /* 4 pesce */ `pesce, salmone, tonno fresco, orata, branzino, spigola, merluzzo, baccala, gamberi, gamberetti, mazzancolle, cozze, vongole,
-    calamari, seppie, polpo, pesce spada, trota, sogliola, platessa, alici fresche, filetti di pesce, salmerino, coregone`,
+    calamari, seppie, polpo, pesce spada, trota, sogliola, platessa, alici fresche, filetti di pesce, salmerino, coregone, scorfano, rombo, nasello, sarde, triglia, dentice, cernia, ricciola, palombo, persico, lavarello, gallinella,
+    capesante, ostriche, scampi, astice, aragosta, granchio, totani, moscardini, seppioline, cefalo, pagello, sarago, anguilla, carpaccio di pesce,
+    tranci di pesce, sushi, frutti di mare, polipo, zuppa di pesce`,
   /* 5 carne */ `carne, manzo, vitello, maiale, pollo, petto di pollo, cosce di pollo, fusi di pollo, ali di pollo, tacchino, petto di tacchino,
     agnello, coniglio, macinato, carne macinata, hamburger, salsiccia, luganega, bistecca, fettine, scaloppine, spezzatino, arrosto, costine,
-    braciole, filetto, lonza, polpette, cotoletta, cotolette, involtini, tagliata, sovracoscia, ossobuco`,
+    braciole, filetto, lonza, polpette, cotoletta, cotolette, involtini, tagliata, sovracoscia, ossobuco, fesa, roast beef, cotechino, zampone, guanciale, stinco, faraona, anatra, quaglia, trippa, fegato, tartare`,
   /* 6 cereali e cracker */ `cracker, crackers, grissini, pancarre, pan carre, pane in cassetta, pan bauletto, piadina, piadine, tortillas, gallette,
     gallette di riso, taralli, cereali, corn flakes, muesli, fiocchi d avena, avena, granola, crostini, friselle, pane per hamburger, wasa,
     pane azzimo, schiacciatine, pane confezionato`,
@@ -60,7 +62,7 @@ const PAROLE = [
     sciroppo d acero, colazione`,
   /* 9 biologico */ `biologico, biologici, bio, senza glutine, gluten free, prodotti bio`,
   /* 10 caffè */ `caffe, caffe macinato, caffe in grani, capsule, cialde, lavazza, orzo, ginseng, te, the, tisana, tisane, camomilla, infuso,
-    decaffeinato, caffe solubile`,
+    decaffeinato, caffe solubile, illy, kimbo, segafredo, borbone, nespresso, lavazza, caffe in capsule, moka`,
   /* 11 biscotti */ `biscotti, biscotto, frollini, wafer, savoiardi, pavesini, amaretti, cantucci, mulino bianco, oro saiwa, digestive, gocciole,
     pan di stelle, macine, abbracci, tarallucci, galletti, baiocchi, ringo, oreo`,
   /* 12 dolci e merendine */ `merendine, merendina, cioccolato, cioccolata, cioccolatini, tavoletta di cioccolato, ovetti, kinder, barrette,
@@ -89,7 +91,7 @@ const PAROLE = [
     ammorbidente, candeggina, ace, sgrassatore, anticalcare, spugne, spugnette, carta igienica, scottex, carta da cucina, carta cucina, rotoloni,
     tovaglioli, fazzoletti, sacchetti, sacchi spazzatura, sacchetti immondizia, sacchetti freezer, pellicola, alluminio, carta forno,
     carta da forno, shampoo, balsamo, bagnoschiuma, docciaschiuma, sapone, sapone mani, dentifricio, spazzolino, collutorio, filo interdentale,
-    deodorante, cotton fioc, assorbenti, pannolini, salviette, salviettine, cerotti, rasoi, lamette, schiuma da barba, crema, crema solare,
+    deodorante, cotton fioc, assorbenti, pannolini, salviette, salviettine, cerotti, rasoi, lamette, schiuma da barba, crema mani, crema viso, crema corpo, crema solare,
     lampadine, pile, batterie, insetticida, zanzariere, dash, dixan, finish, swiffer, vileda, guanti, acqua ossigenata, alcool, disinfettante,
     amuchina, lettiera, crocchette, cibo per gatti, cibo per cani, farmacia, tachipirina, moment, vetril, mocio, scopa, accendino, fiammiferi,
     acqua demineralizzata, sale per lavastoviglie, brillantante`,
@@ -108,18 +110,27 @@ function radice(p) {
     : w.length > 3 && /[aeiou]$/.test(w) ? w.slice(0, -1) + '[aeiou]' : w + 's?').join(' ')
 }
 
+// parole che dicono il taglio o la confezione, non il prodotto: contano solo se non c'è altro ("filetti di scorfano" è pesce)
+const DEBOLI = new Set(['filetto', 'filetti', 'fettine', 'polpa', 'semi', 'dolci', 'colazione', 'salsa', 'salse', 'bio'])
+
 const VOCI = []
 PAROLE.forEach((riga, z) => riga.split(',').map(s => normalizza(s)).filter(Boolean).forEach(p =>
-  VOCI.push({ z, lung: p.length, re: new RegExp('(^| )' + radice(p) + '( |$)') })))
-VOCI.sort((a, b) => b.lung - a.lung)
+  VOCI.push({ z, lung: p.length, debole: DEBOLI.has(p), re: new RegExp('(^| )' + radice(p) + '(?= |$)') })))
 
+// vince la parola che viene prima nel nome ("pane alle olive" è pane); a parità di inizio la più lunga ("latte di soia" batte "latte")
 // memoria: { "testo normalizzato": indice zona } con le correzioni fatte a mano
 function trovaZona(testo, memoria) {
   const n = normalizza(testo)
   if (memoria && n in memoria) return memoria[n]
   if (/(^| )(surgel|congel)/.test(n)) return 22
-  for (const v of VOCI) if (v.re.test(n)) return v.z
-  return -1
+  let meglio = null
+  for (const v of VOCI) {
+    const m = v.re.exec(n); if (!m) continue
+    const c = { z: v.z, debole: v.debole, inizio: m.index + m[1].length, lung: v.lung }
+    if (!meglio || (meglio.debole && !c.debole) || (meglio.debole === c.debole &&
+        (c.inizio < meglio.inizio || (c.inizio === meglio.inizio && c.lung > meglio.lung)))) meglio = c
+  }
+  return meglio ? meglio.z : -1
 }
 
 if (typeof module !== 'undefined') module.exports = { ZONE, trovaZona, normalizza }

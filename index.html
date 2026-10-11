@@ -223,6 +223,8 @@ const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','
 let st = { prodotti: [], memoria: {} }
 try { Object.assign(st, JSON.parse(localStorage.getItem(CHIAVE)) || {}) } catch (e) {}
 const salva = () => localStorage.setItem(CHIAVE, JSON.stringify(st))
+// a ogni apertura i prodotti ripassano dal dizionario (che può essere migliorato); quelli spostati a mano restano dove sono
+st.prodotti.forEach(p => { p.zona = trovaZona(p.nome, st.memoria) })
 navigator.storage?.persist?.()
 
 const presiAperto = { v: false }
