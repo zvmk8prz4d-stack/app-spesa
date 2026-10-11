@@ -95,6 +95,7 @@ main{padding:6px 18px calc(var(--sb) + 110px)}
 .pi span{flex:1;text-decoration:line-through}
 .pi small{font-size:12px;color:var(--acc);font-weight:600}
 .pop{animation:salta .4s}
+.versione{text-align:center;font-size:12px;color:#a3ada8;margin-top:24px}
 @keyframes salta{50%{transform:scale(1.25)}}
 
 /* aggiungi */
@@ -154,6 +155,7 @@ textarea:focus{outline:none;border-color:var(--acc)}
 <main>
   <div id="percorso"></div>
   <section id="presi"></section>
+  <p class="versione" id="versione"></p>
 </main>
 
 <div class="barra"><button class="agg" id="agg"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Aggiungi prodotti</button></div>
@@ -216,6 +218,7 @@ textarea:focus{outline:none;border-color:var(--acc)}
 <script src="zone.js"></script>
 <script>
 const CHIAVE = 'spesa.v1'
+const VERSIONE_APP = 3
 const $ = s => document.querySelector(s)
 const ico = n => `<svg viewBox="0 0 24 24"><use href="#i-${n}"/></svg>`
 const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))
@@ -376,9 +379,15 @@ const lascia = () => { clearTimeout(timer); anello.classList.remove('carica') }
 velo.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
 velo.addEventListener('contextmenu', e => e.preventDefault())
 
+$('#versione').textContent = 'versione ' + VERSIONE_APP
 disegna()
 addEventListener('resize', posizionaTu)
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js')
+// quando arriva una versione nuova l'app si ricarica da sola (non alla prima installazione)
+if ('serviceWorker' in navigator) {
+  const giaControllata = !!navigator.serviceWorker.controller
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (giaControllata) location.reload() })
+  navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+}
 </script>
 </body>
 </html>
