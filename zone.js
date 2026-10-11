@@ -37,7 +37,7 @@ const PAROLE = [
     semi di girasole, semi di chia, semi di lino, semi di sesamo, frutta secca, frutta a guscio, uvetta, datteri, prugne secche, albicocche secche,
     fichi secchi, castagne, germogli, cocco, melagrana, sushi`,
   /* 1 pane e pasticceria */ `pane, pane fresco, pagnotta, panino, baguette, ciabatta, rosetta, michetta, filone, pane integrale, pane di segale,
-    pane ai cereali, focaccia, pizza bianca, brioche, cornetto, croissant, torta, crostata, pasticcini, bigne, krapfen, strudel, pasticceria, treccia, pane alle olive, pane alle noci, pane ai semi, pane di grano duro, pane al latte, bauletto fresco`,
+    pane ai cereali, focaccia, pizza bianca, brioche, cornetto, croissant, torta, crostata, pasticcini, bigne, krapfen, strudel, pasticceria, treccia, pizza, pizze, pizzette, pane alle olive, pane alle noci, pane ai semi, pane di grano duro, pane al latte, bauletto fresco`,
   /* 2 rosticceria e affettati */ `prosciutto, prosciutto crudo, prosciutto cotto, speck, salame, salamino, mortadella, bresaola, coppa, pancetta,
     lardo, porchetta, fesa di tacchino, affettato, affettati, carne salada, rosticceria, pollo arrosto, girarrosto, lasagne pronte, piatti pronti,
     arancini, suppli, olive ascolane, tramezzini, formaggio al taglio, insalata di riso, insalata russa, cotoletta pronta`,
@@ -96,7 +96,7 @@ const PAROLE = [
     amuchina, lettiera, crocchette, cibo per gatti, cibo per cani, farmacia, tachipirina, moment, vetril, mocio, scopa, accendino, fiammiferi,
     acqua demineralizzata, sale per lavastoviglie, brillantante`,
   /* 22 surgelati */ `surgelati, surgelato, surgelata, surgelate, gelato, gelati, ghiaccioli, ghiaccio, cubetti di ghiaccio, bastoncini,
-    bastoncini di pesce, findus, pizza, pizze, pizza surgelata, minestrone, sofficini, quattro salti in padella, verdure surgelate`
+    bastoncini di pesce, findus, pizza surgelata, minestrone, sofficini, quattro salti in padella, verdure surgelate`
 ]
 
 function normalizza(t) {
