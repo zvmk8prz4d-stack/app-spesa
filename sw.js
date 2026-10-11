@@ -1,5 +1,5 @@
 // Tiene l'app apribile anche senza campo. A ogni aggiornamento dell'app cambiare VERSIONE (e VERSIONE_APP in index.html).
-const VERSIONE = 'spesa-4'
+const VERSIONE = 'spesa-5'
 const FILE = ['./', './index.html', './zone.js', './manifest.json', './icona-180.png', './icona-512.png']
 
 // cache:'reload' scavalca la memoria del browser: GitHub Pages la fa durare 10 minuti (max-age=600) e ridava i file vecchi
