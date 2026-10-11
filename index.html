@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Spesa</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Spesa">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f5f6f2">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icona-180.png">
+<link rel="icon" href="icona-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--bg:#f5f6f2;--fg:#15201b;--muted:#68756f;--card:#fff;--line:#e1e5df;--acc:#0b8457;--acc2:#e9f5ef;--rosso:#ff5a36;
+  --font:'Space Grotesk',-apple-system,system-ui,sans-serif;--st:env(safe-area-inset-top);--sb:env(safe-area-inset-bottom)}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:17px;touch-action:manipulation;-webkit-user-select:none;user-select:none;
+  -webkit-text-size-adjust:100%;overscroll-behavior:none}
+body.bloccato{overflow:hidden}
+.carta{position:fixed;inset:0;z-index:-1;background:linear-gradient(#e7eae4 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,#e7eae4 1px,transparent 1px) 0 0/24px 24px,var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+svg{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* testata */
+header{position:sticky;top:0;z-index:5;padding:calc(var(--st) + 14px) 18px 10px;background:linear-gradient(var(--bg) 80%,#f5f6f200)}
+.riga{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+h1{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.sotto{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.35}
+.sotto b{color:var(--fg);font-weight:600}
+.blocca{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:#fff;font-size:24px;box-shadow:0 6px 16px -6px #15201b88}
+.spia{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-size:13px;font-weight:600;padding:6px 12px 6px 9px;border-radius:20px;
+  background:var(--card);border:1px solid var(--line);color:#b26b00}
+.spia svg{font-size:17px}
+.spia.on{color:var(--acc)}
+.spia.on svg{animation:gira 8s linear infinite}
+@keyframes gira{to{rotate:360deg}}
+
+/* percorso */
+main{padding:6px 18px calc(var(--sb) + 110px)}
+#percorso{position:relative;padding-left:4px}
+#percorso.pieno::before{content:"";position:absolute;left:21px;top:20px;bottom:10px;width:4px;border-radius:2px;
+  background:repeating-linear-gradient(var(--acc) 0 10px,transparent 10px 17px);animation:binario 1.6s linear infinite}
+@keyframes binario{to{background-position:0 17px}}
+.tu{position:absolute;left:5px;width:38px;height:38px;border-radius:50%;z-index:2;pointer-events:none;transition:top .6s cubic-bezier(.5,1.4,.5,1)}
+.tu::before{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--rosso);box-shadow:0 0 0 4px #ff5a3640}
+.tu::after{content:"";position:absolute;inset:5px;border-radius:50%;border:2px solid var(--rosso);animation:onda 1.7s ease-out infinite}
+@keyframes onda{to{transform:scale(1.9);opacity:0}}
+.zona{margin-bottom:14px;transition:opacity .3s}
+.zh{display:flex;align-items:center;gap:12px;position:relative;z-index:1;margin-bottom:8px;min-height:40px}
+.ic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--acc);border:3px solid var(--acc);font-size:21px;flex:none}
+.zona.attuale .ic{opacity:0}
+.zt{flex:1;min-width:0}
+.zn{font-size:17px;font-weight:700;line-height:1.15}
+.zs{font-size:12px;color:var(--muted)}
+.zc{font-size:13px;font-weight:700;min-width:26px;height:26px;padding:0 8px;border-radius:13px;display:grid;place-items:center;background:var(--acc2);color:var(--acc)}
+.zona.ignota .ic{border-color:var(--rosso);color:var(--rosso)}
+.zona.ignota .zc{background:#ffe9e3;color:var(--rosso)}
+.it{display:flex;align-items:center;gap:10px;margin:0 0 8px 52px;padding:8px 8px 8px 16px;border-radius:14px;background:var(--card);border:1px solid var(--line);
+  min-height:62px;overflow:hidden;transition:height .3s ease,min-height .3s ease,padding .3s ease,margin .3s ease,opacity .25s;animation:entra .45s backwards}
+@keyframes entra{from{opacity:0;transform:translateY(10px)}}
+.nome{flex:1;min-width:0;text-align:left;font-size:18px;font-weight:500;line-height:1.25;padding:6px 0;overflow-wrap:anywhere}
+.ok{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;border:2.5px solid var(--acc);color:var(--acc);font-size:24px;flex:none;
+  transition:background .2s,color .2s,transform .2s}
+.ok svg{stroke-width:2.6;stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset .3s}
+.ok:active{transform:scale(.92)}
+.it.via .ok{background:var(--acc);color:#fff}
+.it.via .ok svg{stroke-dashoffset:0}
+.it.via{animation:scivola .45s .15s ease-in forwards}
+@keyframes scivola{to{transform:translateX(-40%);opacity:0}}
+.it.chiudi{min-height:0;height:0!important;padding-top:0;padding-bottom:0;margin-bottom:0;border-width:0}
+.zona.ignota .it{border-color:#ffc9bb}
+.zona.ignota .nome::after{content:"Tocca per scegliere la zona";display:block;font-size:12px;color:var(--rosso);margin-top:2px}
+
+.vuoto{text-align:center;padding:60px 20px 20px;color:var(--muted);line-height:1.5}
+.vuoto .grande{font-size:56px;color:var(--acc);margin-bottom:10px}
+.vuoto b{display:block;color:var(--fg);font-size:20px;margin-bottom:4px}
+
+/* presi */
+#presi{margin-top:18px;border-top:2px dashed var(--line);padding-top:14px}
+.ph{display:flex;align-items:center;gap:10px}
+.ph .apri{flex:1;display:flex;align-items:center;gap:10px;font-weight:700;font-size:16px;padding:10px 0;text-align:left}
+.ph .apri svg{font-size:22px;color:var(--acc)}
+.ph .apri .fr{transition:rotate .25s;font-size:16px;color:var(--muted)}
+#presi.aperto .ph .apri .fr{rotate:180deg}
+.nuova{font-size:14px;font-weight:600;padding:9px 14px;border-radius:20px;background:var(--card);border:1px solid var(--line);color:var(--fg)}
+.pl{display:none;margin-top:6px}
+#presi.aperto .pl{display:block}
+.pi{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 14px;margin-bottom:6px;border-radius:12px;background:#ffffff99;color:var(--muted);font-size:16px}
+.pi span{flex:1;text-decoration:line-through}
+.pi small{font-size:12px;color:var(--acc);font-weight:600}
+.pop{animation:salta .4s}
+@keyframes salta{50%{transform:scale(1.25)}}
+
+/* aggiungi */
+.barra{position:fixed;left:0;right:0;bottom:0;z-index:6;padding:12px 18px calc(var(--sb) + 12px);background:linear-gradient(#f5f6f200,var(--bg) 35%)}
+.agg{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:17px;border-radius:18px;background:var(--acc);color:#fff;font-size:18px;font-weight:700;
+  box-shadow:0 10px 24px -10px #0b8457}
+.agg svg{font-size:22px;stroke-width:2.4}
+
+/* fogli */
+.fondale{position:fixed;inset:0;z-index:10;background:#15201b66;opacity:0;pointer-events:none;transition:opacity .25s}
+.foglio{position:fixed;left:0;right:0;bottom:0;z-index:11;background:var(--bg);border-radius:24px 24px 0 0;padding:10px 18px calc(var(--sb) + 18px);
+  transform:translateY(105%);transition:transform .35s cubic-bezier(.3,1,.4,1);max-height:88vh;display:flex;flex-direction:column}
+.aperto>.fondale{opacity:1;pointer-events:auto}
+.aperto>.foglio{transform:none}
+.maniglia{width:40px;height:5px;border-radius:3px;background:#c9cfc8;margin:0 auto 14px}
+.foglio h2{font-size:22px;letter-spacing:-.02em;margin-bottom:4px}
+.foglio p{font-size:14px;color:var(--muted);margin-bottom:12px}
+textarea{width:100%;min-height:150px;font:inherit;font-size:18px;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:#fff;color:var(--fg);resize:none;
+  -webkit-user-select:text;user-select:text}
+textarea:focus{outline:none;border-color:var(--acc)}
+.pulsanti{display:flex;gap:10px;margin-top:12px}
+.pulsanti button{flex:1;padding:15px;border-radius:14px;font-weight:700;font-size:17px;background:var(--card);border:1px solid var(--line)}
+.pulsanti .si{background:var(--acc);color:#fff;border-color:var(--acc)}
+.zonelist{overflow-y:auto;-webkit-overflow-scrolling:touch;margin:0 -6px;padding:0 6px}
+.zb{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:9px 10px;border-radius:12px;font-size:16px;font-weight:500}
+.zb .ic{width:34px;height:34px;font-size:17px;border-width:2.5px}
+.zb.sel{background:var(--acc2);font-weight:700}
+.togli{color:#c0392b;font-weight:600;font-size:15px;padding:12px 10px;text-align:left}
+
+/* lucchetto */
+.velo{position:fixed;inset:0;z-index:20;background:#060908;color:#e9efe9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;
+  padding:30px;text-align:center;clip-path:inset(0 0 100% 0);transition:clip-path .5s cubic-bezier(.7,0,.2,1);touch-action:none;pointer-events:none}
+.velo.on{clip-path:inset(0);pointer-events:auto}
+.velo .info{font-size:15px;color:#8fa198;line-height:1.5}
+.velo .info b{display:block;font-size:22px;color:#e9efe9;margin-bottom:4px}
+.anello{width:150px;height:150px;position:relative;display:grid;place-items:center;touch-action:none;-webkit-touch-callout:none}
+.anello svg.r{position:absolute;inset:0;width:100%;height:100%;rotate:-90deg}
+.anello circle{fill:none;stroke-width:4}
+.anello .b{stroke:#ffffff22}
+.anello .p{stroke:#30d158;stroke-dasharray:289;stroke-dashoffset:289;stroke-linecap:round}
+.anello.carica .p{transition:stroke-dashoffset 2s linear;stroke-dashoffset:0}
+.anello .lk{font-size:52px}
+.velo .aiuto{font-size:14px;color:#6c7d74}
+</style>
+</head>
+<body>
+<div class="carta"></div>
+
+<header>
+  <div class="riga">
+    <div><h1>Spesa</h1><div class="sotto" id="sotto"></div></div>
+    <button class="blocca" id="blocca" aria-label="Blocca lo schermo"><svg viewBox="0 0 24 24"><use href="#i-lucchetto"/></svg></button>
+  </div>
+  <button class="spia" id="spia"><svg viewBox="0 0 24 24"><use href="#i-sole"/></svg><span></span></button>
+</header>
+
+<main>
+  <div id="percorso"></div>
+  <section id="presi"></section>
+</main>
+
+<div class="barra"><button class="agg" id="agg"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Aggiungi prodotti</button></div>
+
+<div id="fAgg"><div class="fondale"></div><div class="foglio">
+  <div class="maniglia"></div>
+  <h2>Aggiungi alla lista</h2>
+  <p>Uno per riga, oppure separati da virgola. Li metto io nella zona giusta.</p>
+  <textarea id="testo" placeholder="mele&#10;latte&#10;petto di pollo&#10;detersivo piatti" autocapitalize="sentences"></textarea>
+  <div class="pulsanti"><button data-chiudi>Annulla</button><button class="si" id="aggiungi">Aggiungi</button></div>
+</div></div>
+
+<div id="fZona"><div class="fondale"></div><div class="foglio">
+  <div class="maniglia"></div>
+  <h2 id="zTitolo"></h2>
+  <p>In che zona lo trovi? Me lo ricordo per le prossime volte.</p>
+  <div class="zonelist" id="zLista"></div>
+  <button class="togli" id="togli">Togli dalla lista</button>
+</div></div>
+
+<div class="velo" id="velo">
+  <div class="info" id="vInfo"></div>
+  <div class="anello" id="anello"><svg class="r" viewBox="0 0 100 100"><circle class="b" cx="50" cy="50" r="46"/><circle class="p" cx="50" cy="50" r="46"/></svg>
+    <svg class="lk" viewBox="0 0 24 24"><use href="#i-lucchetto"/></svg></div>
+  <div class="aiuto">Tieni premuto il lucchetto 2 secondi per sbloccare</div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-lucchetto" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10.5" rx="2.2"/><path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7M12 14.5v2.5"/></symbol>
+  <symbol id="i-sole" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.8"/><path d="M12 2.5v2M12 19.5v2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M2.5 12h2M19.5 12h2M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-carrello" viewBox="0 0 24 24"><path d="M2.5 4h2.3l2.4 11.2h10.4L20 7.2H6.2"/><circle cx="9.5" cy="19.5" r="1.5"/><circle cx="16.5" cy="19.5" r="1.5"/></symbol>
+  <symbol id="i-giu" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-ignota" viewBox="0 0 24 24"><path d="M9.2 9a3 3 0 1 1 4 2.8c-.8.3-1.2 1-1.2 1.8v.6"/><circle cx="12" cy="17.5" r=".6"/></symbol>
+  <symbol id="i-frutta" viewBox="0 0 24 24"><path d="M12 7.5c-1.2-1.8-3.3-2.6-5.2-1.9C3.9 6.7 3.6 10.3 4.6 13.6 5.7 17 8 20.2 10.1 19.7c.9-.2 1.2-.6 1.9-.6s1 .4 1.9.6c2.1.5 4.4-2.7 5.5-6.1 1-3.3.7-6.9-2.2-8-1.9-.7-4 .1-5.2 1.9z"/><path d="M12 7.5c0-2.1 1-3.7 3-4.5"/></symbol>
+  <symbol id="i-pane" viewBox="0 0 24 24"><path d="M5 11.5A3.6 3.6 0 0 1 6.6 5h10.8A3.6 3.6 0 0 1 19 11.5V19a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M9.5 9.5l1.5 2M13 9.5l1.5 2"/></symbol>
+  <symbol id="i-affettati" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M8 7.5l.01 0M16.5 9l.01 0M15.5 16l.01 0M7.5 15l.01 0"/></symbol>
+  <symbol id="i-fresco" viewBox="0 0 24 24"><path d="M3.5 16.5L14 6.5l6.5 5v5z"/><path d="M3.5 16.5v3h17v-3"/><circle cx="12" cy="13" r="1.2"/><circle cx="16.5" cy="14.5" r=".9"/></symbol>
+  <symbol id="i-pesce" viewBox="0 0 24 24"><path d="M3 12c3-4.5 9-6 14-2l3.5-2.5v9L17 14c-5 4-11 2.5-14-2z"/><circle cx="8" cy="11.3" r=".7"/></symbol>
+  <symbol id="i-carne" viewBox="0 0 24 24"><path d="M15.2 3.8a5.4 5.4 0 0 1 4.3 8.6c-1.6 1.6-4.2 2.1-6.3 1.5l-4 4a2 2 0 1 1-2.9 1 2 2 0 1 1-1-2.9l4-4c-.6-2.1-.1-4.7 1.5-6.3a5.4 5.4 0 0 1 4.4-1.9z"/></symbol>
+  <symbol id="i-cracker" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="2"/><path d="M8.5 8.5h.01M12 8.5h.01M15.5 8.5h.01M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 15.5h.01M12 15.5h.01M15.5 15.5h.01"/></symbol>
+  <symbol id="i-latte" viewBox="0 0 24 24"><path d="M8 2.5h8M8.5 2.5v3L6 9v12.5h12V9l-2.5-3.5v-3"/><path d="M6 13h12"/></symbol>
+  <symbol id="i-vasetto" viewBox="0 0 24 24"><rect x="5.5" y="3" width="13" height="4" rx="1"/><path d="M6.5 7h11a1 1 0 0 1 1 1v11a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2V8a1 1 0 0 1 1-1z"/><path d="M9 12.5h6v4H9z"/></symbol>
+  <symbol id="i-bio" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14 0 9-5 14-12 14z"/><path d="M5 19c3-4 6-7 10-9"/></symbol>
+  <symbol id="i-caffe" viewBox="0 0 24 24"><path d="M4 9.5h12.5V14a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M16.5 11h1.3a2.4 2.4 0 0 1 0 4.8h-1.6"/><path d="M8 3.5c-.9.9.9 1.8 0 3M12 3.5c-.9.9.9 1.8 0 3"/></symbol>
+  <symbol id="i-biscotto" viewBox="0 0 24 24"><path d="M20.5 12A8.5 8.5 0 1 1 12 3.5a3 3 0 0 0 3.5 3.5 3 3 0 0 0 3.5 3.5c.9 0 1.5.6 1.5 1.5z"/><path d="M8.5 9.5h.01M8 14.5h.01M12.5 13h.01M15 16.5h.01"/></symbol>
+  <symbol id="i-merendina" viewBox="0 0 24 24"><path d="M5 10.5h14l-1.5 9.5h-11z"/><path d="M5 10.5a7 7 0 0 1 14 0"/><path d="M12 3.5v-1M9.5 13.5l.5 4M14.5 13.5l-.5 4"/></symbol>
+  <symbol id="i-farina" viewBox="0 0 24 24"><path d="M7 4h10l-1 3c2 2 3 5 3 8.5 0 3-2 5-7 5s-7-2-7-5C5 12 6 9 8 7z"/><path d="M12 11v6M10 12.5c1 0 2 1 2 2M14 12.5c-1 0-2 1-2 2"/></symbol>
+  <symbol id="i-pasta" viewBox="0 0 24 24"><path d="M3.5 13h17a8.5 8.5 0 0 1-17 0z"/><path d="M8 13c0-4 1-7 2-9M12 13c0-4 .5-7 1-9M16 13c0-4-1-7-2-9"/></symbol>
+  <symbol id="i-pomodoro" viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 6l-1.5-2.5M12 6l2.5-1.5M12 6l-3 .5M12 6l3.5 1"/></symbol>
+  <symbol id="i-lattina" viewBox="0 0 24 24"><ellipse cx="12" cy="5.5" rx="6.5" ry="2"/><path d="M5.5 5.5v13c0 1.1 2.9 2 6.5 2s6.5-.9 6.5-2v-13"/><path d="M5.5 10c0 1.1 2.9 2 6.5 2s6.5-.9 6.5-2"/></symbol>
+  <symbol id="i-olio" viewBox="0 0 24 24"><path d="M10 2.5h4v3l2.5 3v12a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-12L10 5.5z"/><path d="M12 12.5c1.5 1.8 1.5 3.5 0 4.5-1.5-1-1.5-2.7 0-4.5z"/></symbol>
+  <symbol id="i-tonno" viewBox="0 0 24 24"><ellipse cx="12" cy="9" rx="8.5" ry="3"/><path d="M3.5 9v5c0 1.7 3.8 3 8.5 3s8.5-1.3 8.5-3V9"/><path d="M8 9c1.5-1.2 4.5-1.4 6.5 0"/></symbol>
+  <symbol id="i-vino" viewBox="0 0 24 24"><path d="M7 3h10c.5 4-1 8-5 8s-5.5-4-5-8z"/><path d="M12 11v9M8.5 20.5h7M7.3 7h9.4"/></symbol>
+  <symbol id="i-acqua" viewBox="0 0 24 24"><path d="M10 2.5h4v2.5c2 1 3 2.5 3 4.5v10a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-10c0-2 1-3.5 3-4.5z"/><path d="M7 11.5h10M7 16h10"/></symbol>
+  <symbol id="i-casa" viewBox="0 0 24 24"><path d="M9 9.5h6l1.2 3V20a1 1 0 0 1-1 1H8.8a1 1 0 0 1-1-1v-7.5z"/><path d="M10.2 9.5V6.5h3.6v3M13.8 6.5h3l1.2 2M19.5 4.5l1-1M20 7.5h1.5"/></symbol>
+  <symbol id="i-surgelati" viewBox="0 0 24 24"><path d="M12 2.5v19M3.8 7.2l16.4 9.6M3.8 16.8l16.4-9.6"/><path d="M9.5 4l2.5 2 2.5-2M9.5 20l2.5-2 2.5 2"/></symbol>
+</svg>
+
+<script src="zone.js"></script>
+<script>
+const CHIAVE = 'spesa.v1'
+const $ = s => document.querySelector(s)
+const ico = n => `<svg viewBox="0 0 24 24"><use href="#i-${n}"/></svg>`
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))
+
+let st = { prodotti: [], memoria: {} }
+try { Object.assign(st, JSON.parse(localStorage.getItem(CHIAVE)) || {}) } catch (e) {}
+const salva = () => localStorage.setItem(CHIAVE, JSON.stringify(st))
+navigator.storage?.persist?.()
+
+const presiAperto = { v: false }
+const nomeZona = z => z < 0 ? 'Da sistemare' : ZONE[z].nome
+
+// ---------- disegno ----------
+function disegna() {
+  const da = st.prodotti.filter(p => !p.preso), presi = st.prodotti.filter(p => p.preso)
+  const per = $('#percorso')
+  const gruppi = new Map()
+  ;[...da].sort((a, b) => a.zona - b.zona || a.ts - b.ts).forEach(p => { if (!gruppi.has(p.zona)) gruppi.set(p.zona, []); gruppi.get(p.zona).push(p) })
+
+  if (!st.prodotti.length) {
+    per.className = ''
+    per.innerHTML = `<div class="vuoto"><div class="grande">${ico('carrello')}</div><b>Lista vuota</b>Tocca "Aggiungi prodotti" qui sotto:<br>li metto io nell'ordine del giro.</div>`
+  } else if (!da.length) {
+    per.className = ''
+    per.innerHTML = `<div class="vuoto"><div class="grande">${ico('ok')}</div><b>Tutto nel carrello</b>Puoi andare alla cassa.</div>`
+  } else {
+    per.className = 'pieno'
+    let h = '<span class="tu" id="tu"></span>'
+    gruppi.forEach((lista, z) => {
+      const zi = z < 0 ? null : ZONE[z]
+      h += `<section class="zona${z < 0 ? ' ignota' : ''}" data-z="${z}"><div class="zh"><span class="ic">${ico(zi ? zi.ic : 'ignota')}</span>
+        <div class="zt"><div class="zn">${nomeZona(z)}</div>${zi && zi.sotto ? `<div class="zs">${zi.sotto}</div>` : ''}</div><span class="zc">${lista.length}</span></div>`
+      lista.forEach((p, i) => { h += `<div class="it" data-id="${p.id}" style="animation-delay:${i * 40}ms"><button class="nome" data-azione="zona">${esc(p.nome)}</button>
+        <button class="ok" data-azione="preso" aria-label="Nel carrello">${ico('ok')}</button></div>` })
+      h += '</section>'
+    })
+    per.innerHTML = h
+  }
+
+  const ps = $('#presi')
+  ps.className = presiAperto.v ? 'aperto' : ''
+  ps.style.display = presi.length ? '' : 'none'
+  ps.innerHTML = `<div class="ph"><button class="apri" data-azione="apriPresi">${ico('carrello')} Nel carrello · <span id="nPresi">${presi.length}</span>
+      <svg class="fr" viewBox="0 0 24 24"><use href="#i-giu"/></svg></button><button class="nuova" data-azione="nuova">Nuova spesa</button></div>
+    <div class="pl">${presi.sort((a, b) => b.tPreso - a.tPreso).map(p => `<button class="pi" data-id="${p.id}" data-azione="rimetti"><span>${esc(p.nome)}</span><small>Rimetti</small></button>`).join('')}</div>`
+
+  const prossima = gruppi.size ? nomeZona([...gruppi.keys()][0]) : ''
+  $('#sotto').innerHTML = da.length ? `<b>${da.length}</b> da prendere · prossima: <b>${prossima}</b>` : st.prodotti.length ? 'Lista completata' : 'Nessun prodotto'
+  $('#vInfo').innerHTML = da.length ? `<b>${da.length} da prendere</b>Prossima zona: ${prossima}` : '<b>Lista completata</b>'
+  requestAnimationFrame(posizionaTu)
+}
+
+function posizionaTu() {
+  const tu = $('#tu'), z = document.querySelector('.zona')
+  if (!tu || !z) return
+  document.querySelectorAll('.zona.attuale').forEach(e => e.classList.remove('attuale'))
+  z.classList.add('attuale')
+  tu.style.top = (z.offsetTop + 1) + 'px'
+}
+
+// ---------- azioni ----------
+function aggiungi(testo) {
+  const voci = testo.split(/[\n,;]+/).map(s => s.replace(/^\s*([-*•·]|\d+[.)])\s*/, '').trim()).filter(Boolean)
+  let nuovi = 0
+  voci.forEach(v => {
+    const n = normalizza(v)
+    const c = st.prodotti.find(p => normalizza(p.nome) === n)
+    if (c) { if (c.preso) { c.preso = false; nuovi++ } return }
+    st.prodotti.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), nome: v.charAt(0).toUpperCase() + v.slice(1), zona: trovaZona(v, st.memoria), preso: false, ts: Date.now() })
+    nuovi++
+  })
+  salva(); disegna()
+  return nuovi
+}
+
+function prendi(el) {
+  const p = st.prodotti.find(x => x.id === el.dataset.id)
+  if (!p || p.preso) return
+  p.preso = true; p.tPreso = Date.now(); salva()
+  el.classList.add('via')
+  const zona = el.closest('.zona'), zc = zona.querySelector('.zc'), resto = zona.querySelectorAll('.it:not(.via)').length
+  zc.textContent = resto
+  setTimeout(() => {
+    el.style.height = el.offsetHeight + 'px'; void el.offsetWidth; el.classList.add('chiudi')
+    if (!resto) zona.style.opacity = '0'
+    setTimeout(disegna, 320)
+  }, 560)
+}
+
+let inModifica = null
+function apriZona(id) {
+  const p = st.prodotti.find(x => x.id === id); if (!p) return
+  inModifica = p
+  $('#zTitolo').textContent = p.nome
+  $('#zLista').innerHTML = ZONE.map((z, i) => `<button class="zb${p.zona === i ? ' sel' : ''}" data-z="${i}"><span class="ic">${ico(z.ic)}</span>${z.nome}</button>`).join('')
+  apriFoglio('#fZona')
+}
+
+function apriFoglio(s) { $(s).classList.add('aperto') }
+function chiudiFogli() { document.querySelectorAll('#fAgg,#fZona').forEach(f => f.classList.remove('aperto')); $('#testo').blur() }
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-azione]'); if (!b) return
+  const a = b.dataset.azione, it = b.closest('.it')
+  if (a === 'preso') prendi(it)
+  else if (a === 'zona') apriZona(it.dataset.id)
+  else if (a === 'apriPresi') { presiAperto.v = !presiAperto.v; $('#presi').classList.toggle('aperto', presiAperto.v) }
+  else if (a === 'rimetti') { const p = st.prodotti.find(x => x.id === b.dataset.id); if (p) { p.preso = false; salva(); disegna() } }
+  else if (a === 'nuova') {
+    if (confirm('Nuova spesa: tolgo dalla lista i prodotti già nel carrello?')) { st.prodotti = st.prodotti.filter(p => !p.preso); presiAperto.v = false; salva(); disegna() }
+  }
+})
+
+$('#agg').onclick = () => { $('#testo').value = ''; apriFoglio('#fAgg'); setTimeout(() => $('#testo').focus(), 350) }
+$('#aggiungi').onclick = () => { aggiungi($('#testo').value); chiudiFogli() }
+document.querySelectorAll('.fondale,[data-chiudi]').forEach(e => e.onclick = chiudiFogli)
+$('#zLista').onclick = e => {
+  const b = e.target.closest('.zb'); if (!b || !inModifica) return
+  const z = +b.dataset.z
+  inModifica.zona = z; st.memoria[normalizza(inModifica.nome)] = z
+  salva(); chiudiFogli(); disegna()
+}
+$('#togli').onclick = () => { if (inModifica) { st.prodotti = st.prodotti.filter(p => p !== inModifica); salva(); chiudiFogli(); disegna() } }
+
+// ---------- schermo sempre acceso ----------
+let sveglia = null
+async function tieniAcceso() {
+  if (!('wakeLock' in navigator)) return spia()
+  if (sveglia && !sveglia.released) return spia()
+  try {
+    sveglia = await navigator.wakeLock.request('screen')
+    sveglia.addEventListener('release', () => { sveglia = null; spia() })
+  } catch (e) { sveglia = null }
+  spia()
+}
+function spia() {
+  const s = $('#spia'), on = sveglia && !sveglia.released
+  s.classList.toggle('on', !!on)
+  s.querySelector('span').textContent = !('wakeLock' in navigator) ? 'Questo browser non tiene acceso lo schermo'
+    : on ? 'Schermo sempre acceso' : 'Tocca per tenere acceso lo schermo'
+}
+document.addEventListener('pointerdown', tieniAcceso, true)
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') tieniAcceso() })
+tieniAcceso()
+
+// ---------- lucchetto ----------
+const velo = $('#velo'), anello = $('#anello')
+$('#blocca').onclick = () => { chiudiFogli(); velo.classList.add('on'); document.body.classList.add('bloccato') }
+let timer = null
+anello.addEventListener('pointerdown', e => {
+  e.preventDefault(); anello.classList.add('carica')
+  timer = setTimeout(() => { velo.classList.remove('on'); document.body.classList.remove('bloccato'); anello.classList.remove('carica') }, 2000)
+})
+const lascia = () => { clearTimeout(timer); anello.classList.remove('carica') }
+;['pointerup', 'pointerleave', 'pointercancel'].forEach(t => anello.addEventListener(t, lascia))
+velo.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
+velo.addEventListener('contextmenu', e => e.preventDefault())
+
+disegna()
+addEventListener('resize', posizionaTu)
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js')
+</script>
+</body>
+</html>
