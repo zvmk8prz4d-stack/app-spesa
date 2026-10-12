@@ -95,6 +95,7 @@ main{padding:6px 18px calc(var(--sb) + 110px)}
 .pi span{flex:1;text-decoration:line-through}
 .pi small{font-size:12px;color:var(--acc);font-weight:600}
 .pop{animation:salta .4s}
+.riparti{text-align:center;margin-top:22px}
 .versione{text-align:center;font-size:12px;color:#a3ada8;margin-top:24px}
 @keyframes salta{50%{transform:scale(1.25)}}
 
@@ -155,6 +156,7 @@ textarea:focus{outline:none;border-color:var(--acc)}
 <main>
   <div id="percorso"></div>
   <section id="presi"></section>
+  <div class="riparti" id="riparti"><button class="nuova" data-azione="nuova">Nuova spesa</button></div>
   <p class="versione" id="versione"></p>
 </main>
 
@@ -218,7 +220,7 @@ textarea:focus{outline:none;border-color:var(--acc)}
 <script src="zone.js"></script>
 <script>
 const CHIAVE = 'spesa.v1'
-const VERSIONE_APP = 6
+const VERSIONE_APP = 7
 const $ = s => document.querySelector(s)
 const ico = n => `<svg viewBox="0 0 24 24"><use href="#i-${n}"/></svg>`
 const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))
@@ -264,8 +266,10 @@ function disegna() {
   ps.className = presiAperto.v ? 'aperto' : ''
   ps.style.display = presi.length ? '' : 'none'
   ps.innerHTML = `<div class="ph"><button class="apri" data-azione="apriPresi">${ico('carrello')} Nel carrello · <span id="nPresi">${presi.length}</span>
-      <svg class="fr" viewBox="0 0 24 24"><use href="#i-giu"/></svg></button><button class="nuova" data-azione="nuova">Nuova spesa</button></div>
+      <svg class="fr" viewBox="0 0 24 24"><use href="#i-giu"/></svg></button></div>
     <div class="pl">${presi.sort((a, b) => b.tPreso - a.tPreso).map(p => `<button class="pi" data-id="${p.id}" data-azione="rimetti"><span>${esc(p.nome)}</span><small>Rimetti</small></button>`).join('')}</div>`
+
+  $('#riparti').style.display = st.prodotti.length ? '' : 'none'
 
   const prossima = gruppi.size ? nomeZona([...gruppi.keys()][0]) : ''
   $('#sotto').innerHTML = da.length ? `<b>${da.length}</b> da prendere · prossima: <b>${prossima}</b>` : st.prodotti.length ? 'Lista completata' : 'Nessun prodotto'
@@ -330,7 +334,7 @@ document.addEventListener('click', e => {
   else if (a === 'apriPresi') { presiAperto.v = !presiAperto.v; $('#presi').classList.toggle('aperto', presiAperto.v) }
   else if (a === 'rimetti') { const p = st.prodotti.find(x => x.id === b.dataset.id); if (p) { p.preso = false; salva(); disegna() } }
   else if (a === 'nuova') {
-    if (confirm('Nuova spesa: tolgo dalla lista i prodotti già nel carrello?')) { st.prodotti = st.prodotti.filter(p => !p.preso); presiAperto.v = false; salva(); disegna() }
+    if (confirm('Nuova spesa: cancello tutta la lista e riparto da zero?')) { st.prodotti = []; presiAperto.v = false; salva(); disegna() }
   }
 })
 
